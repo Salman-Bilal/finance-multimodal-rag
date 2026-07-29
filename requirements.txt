@@ -1,8 +1,33 @@
+# Web Framework & Server
 fastapi
 uvicorn[standard]
+python-multipart
+
+# Database & Migrations
 sqlalchemy
+alembic
+
+# Data Validation & Settings
+pydantic
+pydantic-settings
+python-dotenv
+
+# Authentication & Security
 pwdlib[bcrypt]
 python-jose[cryptography]
-pydantic
-python-dotenv
-email-validator
+
+# Vector Database & Embeddings
+qdrant-client
+sentence-transformers
+
+# Multimodal Document Extractors
+pypdf
+python-docx
+python-pptx
+pandas
+pillow
+markdown
+pytesseract
+
+# Audio & Video Transcription
+faster-whisper

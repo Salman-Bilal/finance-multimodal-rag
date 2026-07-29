@@ -1,5 +1,0 @@
-[
-  "test_main.py::test_create_user",
-  "test_main.py::test_duplicate_email",
-  "test_main.py::test_protected_route_without_token"
-]

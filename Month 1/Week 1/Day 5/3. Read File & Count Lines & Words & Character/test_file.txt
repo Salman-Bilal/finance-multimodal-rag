@@ -1,3 +1,0 @@
-Python is an amazing programming language.
-It handles file processing with ease.
-Happy coding and testing!

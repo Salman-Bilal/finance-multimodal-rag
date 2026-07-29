@@ -1,0 +1,5 @@
+Company: Acme Corp
+Year: 2026
+Q1 Revenue: $1,200,000
+Q1 Net Income: $350,000
+Key Highlights: Q1 revenue grew by 15% year-over-year due to strong sales in AI software solutions. Operating costs remained stable at $850,000.

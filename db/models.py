@@ -49,7 +49,7 @@ class UploadedFile(Base):
     room_id = Column(Integer, ForeignKey("chat_rooms.id"), nullable=False)
     filename = Column(String, nullable=False)
     file_type = Column(String, nullable=False)
-    file_path = Column(String, nullable=False)
+    file_path = Column(String, nullable=True)
     status = Column(String, default="processing")
     uploaded_at = Column(DateTime, default=datetime.datetime.utcnow)
 
