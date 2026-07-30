@@ -5,7 +5,10 @@ from sentence_transformers import SentenceTransformer
 
 # Load embedding model (384-dimensional dense vectors)
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
-embedder = SentenceTransformer(EMBED_MODEL_NAME)
+embedder = SentenceTransformer(
+        EMBED_MODEL_NAME,
+        model_kwargs={"local_files_only": True}
+    )
 VECTOR_SIZE = 384
 COLLECTION_NAME = "multimodal_rag_chunks"
 
