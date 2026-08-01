@@ -1,7 +1,6 @@
 from pptx import Presentation
 
 def extract_pptx_chunks(file_path: str) -> list[str]:
-    """Extract text from PowerPoint (.pptx) slides."""
     prs = Presentation(file_path)
     slide_chunks = []
 

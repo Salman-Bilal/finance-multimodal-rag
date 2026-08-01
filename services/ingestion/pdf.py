@@ -2,7 +2,6 @@ from pypdf import PdfReader
 
 
 def _chunk_text(text: str, chunk_size: int = 500, overlap: int = 50) -> list[str]:
-    """Split text into overlapping fixed-size chunks."""
     chunks = []
     for i in range(0, len(text), chunk_size - overlap):
         chunk = text[i:i + chunk_size].strip()
@@ -17,8 +16,6 @@ def extract_pdf_chunks(file_path: str) -> list[str]:
     for page in reader.pages:
         text = page.extract_text()
         if text and text.strip():
-            # Fix #6: Chunk each page into 500-char segments with 50-char overlap
-            # instead of treating a full dense page as one embedding
             page_chunks = _chunk_text(text.strip())
             chunks.extend(page_chunks)
     return chunks

@@ -338,21 +338,23 @@ def inject_css():
     """, unsafe_allow_html=True)
 
 
-# --- Session State Initialization ---
 if "jwt_token" not in st.session_state:
     st.session_state["jwt_token"] = None
+
 if "current_room_id" not in st.session_state:
     st.session_state["current_room_id"] = None
+
 if "current_room_name" not in st.session_state:
     st.session_state["current_room_name"] = None
+
 if "username" not in st.session_state:
     st.session_state["username"] = None
+
 if "display_name" not in st.session_state:
     st.session_state["display_name"] = None
 
 
 def get_auth_headers():
-    """Helper to inject JWT token in request headers."""
     if st.session_state.get("jwt_token"):
         return {"Authorization": f"Bearer {st.session_state['jwt_token']}"}
     return {}

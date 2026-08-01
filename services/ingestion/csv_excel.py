@@ -3,9 +3,7 @@ from services.embedder import format_row_for_embedding
 
 
 def extract_csv_chunks(file_path: str) -> list[dict]:
-    """
-    Extract CSV rows into text + metadata.
-    """
+    
 
     df = pd.read_csv(file_path)
 

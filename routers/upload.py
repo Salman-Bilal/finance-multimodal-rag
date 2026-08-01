@@ -28,9 +28,6 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-# ---------------------------------------------------------------------------
-# Response schema for file listing
-# ---------------------------------------------------------------------------
 class FileStatusResponse(BaseModel):
     id: int
     filename: str
@@ -42,9 +39,6 @@ class FileStatusResponse(BaseModel):
         from_attributes = True
 
 
-# ---------------------------------------------------------------------------
-# Helper: ownership guard (DRY)
-# ---------------------------------------------------------------------------
 def _get_owned_room(room_id: int, current_user: User, db: Session) -> ChatRoom:
     room = db.query(ChatRoom).filter(
         ChatRoom.id == room_id,
@@ -58,9 +52,7 @@ def _get_owned_room(room_id: int, current_user: User, db: Session) -> ChatRoom:
     return room
 
 
-# ---------------------------------------------------------------------------
-# POST /upload/{room_id} — ingest a document
-# ---------------------------------------------------------------------------
+
 @router.post("/{room_id}", status_code=status.HTTP_201_CREATED)
 async def upload_file(
     room_id: int,

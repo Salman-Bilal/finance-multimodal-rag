@@ -1,6 +1,5 @@
-# services/ingestion/docx.py
 
-import docx  # Note: ensure file is not named docx.py if python-docx standard import fails
+import docx 
 
 def table_to_markdown(table) -> str:
     rows_data = []
@@ -17,7 +16,6 @@ def table_to_markdown(table) -> str:
     body = "\n".join(rows_data[1:])
     return f"{header}\n{separator}\n{body}"
 
-# Make sure this exact name matches the import line in routers/upload.py!
 def extract_docx_chunks(file_path: str, max_chunk_size: int = 500) -> list[str]:
     doc = docx.Document(file_path)
     elements = []
