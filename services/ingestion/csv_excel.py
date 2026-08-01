@@ -1,10 +1,25 @@
 import pandas as pd
+from services.embedder import format_row_for_embedding
 
-def extract_csv_chunks(file_path: str) -> list[str]:
+
+def extract_csv_chunks(file_path: str) -> list[dict]:
+    """
+    Extract CSV rows into text + metadata.
+    """
+
     df = pd.read_csv(file_path)
-    # Convert rows to textual representations
+
     chunks = []
-    for idx, row in df.iterrows():
-        row_str = ", ".join([f"{col}: {val}" for col, val in row.items()])
-        chunks.append(f"Row {idx + 1}: {row_str}")
+
+    for row in df.to_dict(orient="records"):
+
+        content = format_row_for_embedding(row)
+
+        chunks.append(
+            {
+                "content": content,
+                "metadata": row
+            }
+        )
+
     return chunks

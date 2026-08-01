@@ -7,43 +7,17 @@ from db.database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(
-            Integer, 
-            primary_key=True, 
-            index=True
-        )
-    username = Column(
-            String, 
-            unique=True, 
-            index=True, 
-            nullable=False
-        )
-    email = Column(
-            String, 
-            unique=True, 
-            index=True, 
-            nullable=False
-        )
-    hashed_password = Column(
-            String, 
-            nullable=False
-        )
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
     created_at = Column(
-            DateTime, 
-            default=datetime.datetime.utcnow
-        )
+        DateTime,
+        default=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
 
-
-    rooms = relationship(
-            "ChatRoom", 
-            back_populates="owner", 
-            cascade="all, delete-orphan"
-        )
-    messages = relationship(
-            "ChatMessage", 
-            back_populates="user", 
-            cascade="all, delete-orphan"
-        )
+    rooms = relationship("ChatRoom", back_populates="owner", cascade="all, delete-orphan")
+    messages = relationship("ChatMessage", back_populates="user", cascade="all, delete-orphan")
 
 
 class ChatRoom(Base):
@@ -53,7 +27,10 @@ class ChatRoom(Base):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(
+        DateTime,
+        default=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
 
     owner = relationship("User", back_populates="rooms")
     messages = relationship("ChatMessage", back_populates="room", cascade="all, delete-orphan")
@@ -66,10 +43,13 @@ class ChatMessage(Base):
     id = Column(Integer, primary_key=True, index=True)
     room_id = Column(Integer, ForeignKey("chat_rooms.id", ondelete="CASCADE"), nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    role = Column(String, nullable=False)  # "user" or "assistant"
-    content = Column(Text, nullable=False)  # Used Text instead of String for long LLM answers
+    role = Column(String, nullable=False)       # "user" or "assistant"
+    content = Column(Text, nullable=False)
     sources = Column(JSON, nullable=True, default=list)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(
+        DateTime,
+        default=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
 
     room = relationship("ChatRoom", back_populates="messages")
     user = relationship("User", back_populates="messages")
@@ -83,8 +63,11 @@ class UploadedFile(Base):
     filename = Column(String, nullable=False)
     file_type = Column(String, nullable=False)
     file_path = Column(String, nullable=True)
-    status = Column(String, default="processing")  # "processing", "ready", "failed"
-    error_message = Column(Text, nullable=True)     # Added to track failure details
-    uploaded_at = Column(DateTime, default=datetime.datetime.utcnow)
+    status = Column(String, default="processing")   # "processing" | "ready" | "failed"
+    error_message = Column(Text, nullable=True)
+    uploaded_at = Column(
+        DateTime,
+        default=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
 
     room = relationship("ChatRoom", back_populates="files")

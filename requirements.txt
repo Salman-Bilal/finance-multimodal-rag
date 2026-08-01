@@ -1,37 +1,41 @@
 # Web Framework & Server
-fastapi
-uvicorn[standard]
-python-multipart
+fastapi==0.141.1
+uvicorn[standard]==0.52.0
+python-multipart==0.0.32
 
 # Database & Migrations
-sqlalchemy
-alembic
+sqlalchemy==2.0.51
+alembic==1.18.5
 
 # Data Validation & Settings
-pydantic
-pydantic-settings
-python-dotenv
-pydantic[email]
+pydantic==2.13.4
+pydantic-settings==2.14.2
+python-dotenv==1.2.2
+pydantic[email]==2.13.4
+email-validator==2.3.0
 
 # Authentication & Security
-pwdlib[bcrypt]
-python-jose[cryptography]
+pwdlib[bcrypt]==0.3.0
+python-jose[cryptography]==3.5.0
+bcrypt==5.0.0
 
 # Vector Database & Embeddings
-qdrant-client
-sentence-transformers
+qdrant-client==1.18.0
+sentence-transformers==5.6.1
 
 # Multimodal Document Extractors
-pypdf
-python-docx
-python-pptx
-pandas
-pillow
-markdown
-pytesseract
+pypdf==6.14.2
+python-docx==1.2.0
+python-pptx==1.0.2
+pandas==3.0.5
+openpyxl==3.1.5
+pillow==12.3.0
+markdown==3.10.2
+pytesseract==0.3.13
+lxml==6.1.1
 
 # Audio & Video Transcription
-faster-whisper
+faster-whisper==1.2.1
 
-#For Chat Model
-groq
+# LLM Chat Backend
+groq==1.6.0

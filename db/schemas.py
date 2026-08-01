@@ -1,6 +1,6 @@
 # db/schemas.py
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import Any, List, Optional
 from datetime import datetime
 
 
@@ -26,7 +26,10 @@ class ChatMessageResponse(BaseModel):
     user_id: int
     role: str
     content: str
-    sources: Optional[List[SourceItem]] = []
+    # List[Any] so history rows that contain old analytics meta dicts
+    # ({"is_analytics": True, ...}) don't cause a ResponseValidationError.
+    # New assistant messages will still have proper SourceItem dicts.
+    sources: Optional[List[Any]] = []
     created_at: datetime
 
     class Config:

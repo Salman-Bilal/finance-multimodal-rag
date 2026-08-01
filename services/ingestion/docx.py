@@ -1,17 +1,48 @@
-import docx
+# services/ingestion/docx.py
 
-def extract_docx_chunks(file_path: str) -> list[str]:
-    doc = docx.Document(file_path)
-    paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
+import docx  # Note: ensure file is not named docx.py if python-docx standard import fails
+
+def table_to_markdown(table) -> str:
+    rows_data = []
+    for row in table.rows:
+        row_cells = [cell.text.strip().replace("\n", " ") for cell in row.cells]
+        if any(row_cells):
+            rows_data.append(" | ".join(row_cells))
+            
+    if not rows_data:
+        return ""
     
-    # Simple chunker: grouping paragraphs into ~500 character chunks
+    header = rows_data[0]
+    separator = " | ".join(["---"] * len(table.columns))
+    body = "\n".join(rows_data[1:])
+    return f"{header}\n{separator}\n{body}"
+
+# Make sure this exact name matches the import line in routers/upload.py!
+def extract_docx_chunks(file_path: str, max_chunk_size: int = 500) -> list[str]:
+    doc = docx.Document(file_path)
+    elements = []
+
+    for element in doc.element.body:
+        if element.tag.endswith('p'):
+            text = element.text.strip()
+            if text:
+                elements.append(text)
+        elif element.tag.endswith('tbl'):
+            table = docx.table.Table(element, doc)
+            md_table = table_to_markdown(table)
+            if md_table:
+                elements.append(md_table)
+
     chunks, current_chunk = [], ""
-    for p in paragraphs:
-        if len(current_chunk) + len(p) > 500:
-            chunks.append(current_chunk)
-            current_chunk = p
+    for el in elements:
+        if len(current_chunk) + len(el) > max_chunk_size:
+            if current_chunk:
+                chunks.append(current_chunk)
+            current_chunk = el
         else:
-            current_chunk += f"\n{p}" if current_chunk else p
+            current_chunk += f"\n\n{el}" if current_chunk else el
+            
     if current_chunk:
         chunks.append(current_chunk)
+        
     return chunks

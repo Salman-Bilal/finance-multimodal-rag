@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 from db.database import get_db
 from db.models import User
-from services.auth import hash_password, verify_password, create_access_token
+from services.auth import hash_password, verify_password, create_access_token, get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -63,15 +63,19 @@ def login(
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/users", tags=["Auth"])
-def get_all_users(db: Session = Depends(get_db)):
-     """Fetch all registered users (for testing/debugging)."""
-     users = db.query(User).all()
-     return [
-         {
-             "id": user.id,
-             "username": user.username,
-             "email": user.email,
-             "created_at": user.created_at
-          }
-          for user in users
-        ]
+def get_all_users(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Fetch all registered users. Requires authentication."""
+    # Fix #10: Endpoint now requires a valid JWT — unauthenticated callers get 401
+    users = db.query(User).all()
+    return [
+        {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "created_at": user.created_at
+         }
+         for user in users
+       ]
